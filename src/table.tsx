@@ -24,6 +24,7 @@ export default class myTable extends React.Component {
           <th>Stt</th>
             <th>Source</th>
             <th>Translated</th>
+            <th>Image description</th>
           </tr>
         </thead>
         <tbody>
@@ -38,6 +39,9 @@ export default class myTable extends React.Component {
                 </td>
                 <td>
                   {item.translated}
+                </td>
+                <td>
+                  <a target="_blank" href={`https://www.google.com/search?q=${item.source}&tbm=isch`}>{item.source}</a>
                 </td>
               </tr>
             );
