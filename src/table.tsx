@@ -23,7 +23,8 @@ export default class myTable extends React.Component {
           <tr>
           <th>Stt</th>
             <th>Source</th>
-            <th>Translated</th>
+            <th>Google Translated</th>
+            <th>Refe to Cambridge</th>
             <th>Image description</th>
           </tr>
         </thead>
@@ -39,6 +40,9 @@ export default class myTable extends React.Component {
                 </td>
                 <td>
                   {item.translated}
+                </td>
+                <td>
+                  <a target="_blank" href={`https://dictionary.cambridge.org/dictionary/english/${item.source}`}>{item.source}</a>
                 </td>
                 <td>
                   <a target="_blank" href={`https://www.google.com/search?q=${item.source}&tbm=isch`}>{item.source}</a>
