@@ -5,12 +5,12 @@
 // import ReactDOM from "react-dom";
 // import App from './test'
 
-const body = document.querySelector('body')
-const app = document.createElement('div')
-app.id = 'react-root'
-if (body) {
-  body.prepend(app)
-}
+// const body = document.querySelector('body')
+// const app = document.createElement('div')
+// app.id = 'react-root'
+// if (body) {
+//   body.prepend(app)
+// }
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
   if (msg.action == "send_translated_value") {
     alert(msg.value);
