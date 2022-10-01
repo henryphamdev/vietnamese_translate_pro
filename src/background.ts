@@ -78,18 +78,18 @@ chrome.contextMenus.removeAll(function() {
 
 chrome.contextMenus.onClicked.addListener(searchTerapeak);
 
-const start = () => {
-  console.log('go here')
-    chrome.tabs.query({active: true, currentWindow: true}, async (tabs:any) => {
-      chrome.storage.sync.get("translated_history",
-      function(data:any) {
-        if (data?.translated_history){
-          let ask = data.translated_history[Math.floor(Math.random()*data?.translated_history.length)]
-          ask.translated = ask.translated.replace(/[a-s]+/g, "*")
-          chrome.tabs.sendMessage(tabs[0].id, {action: "translated_quiz", value : `${ask.source} meaning ${ask.translated}, động não đi ông già`});
-        }
-      }
-    )
-  })
-}
-setInterval(start, 5 * 60 * 1000);
+// const start = () => {
+//   console.log('go here')
+//     chrome.tabs.query({active: true, currentWindow: true}, async (tabs:any) => {
+//       chrome.storage.sync.get("translated_history",
+//       function(data:any) {
+//         if (data?.translated_history){
+//           let ask = data.translated_history[Math.floor(Math.random()*data?.translated_history.length)]
+//           ask.translated = ask.translated.replace(/[a-s]+/g, "*")
+//           chrome.tabs.sendMessage(tabs[0].id, {action: "translated_quiz", value : `${ask.source} meaning ${ask.translated}, động não đi ông già`});
+//         }
+//       }
+//     )
+//   })
+// }
+// setInterval(start, 5 * 60 * 1000);
