@@ -98,12 +98,25 @@ const start = () => {
     )
   })
 }
-setInterval(start, 5 * 60 * 1000);
 
-setInterval(() => {
-  chrome.tabs.query({active: true, currentWindow: true}, async (tabs:any) => {
-    chrome.tabs.sendMessage(tabs[0].id, {action: "ping", value : `ping reciever`}, (res:any) => {
-      console.log(`Response from reciever: ${res}`)
-    });
-  })
-}, 30 * 1000)
+
+chrome.alarms.create("remind_english_translated", {
+  delayInMinutes: 5,
+  periodInMinutes: 5
+});
+
+
+chrome.alarms.onAlarm.addListener(function(alarm) {
+  if (alarm.name === "remind_english_translated") {
+    start();
+  }
+});
+// setInterval(start, 5 * 60 * 1000);
+
+// setInterval(() => {
+//   chrome.tabs.query({active: true, currentWindow: true}, async (tabs:any) => {
+//     chrome.tabs.sendMessage(tabs[0].id, {action: "ping", value : `ping reciever`}, (res:any) => {
+//       console.log(`Response from reciever: ${res}`)
+//     });
+//   })
+// }, 30 * 1000)

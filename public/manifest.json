@@ -45,7 +45,8 @@
     "activeTab",
     "declarativeContent",
     "storage",
-    "contextMenus"
+    "contextMenus",
+    "alarms"
   ],
 
   "host_permissions": [
