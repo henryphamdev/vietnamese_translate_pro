@@ -1,10 +1,3 @@
-function polling() {
-  // console.log("polling");
-  setTimeout(polling, 1000 * 30);
-}
-
-polling();
-
 function searchTerapeak(contextMenu:any){
 
   var source = contextMenu.selectionText;
@@ -32,9 +25,9 @@ function searchTerapeak(contextMenu:any){
     )})
   }
   if (contextMenu.menuItemId == "reminder") {
-    console.log(`Translated keyword "${source}"`)  
+    console.log(`Add qouta to remind: "${source}"`)  
     chrome.tabs.query({active: true, currentWindow: true}, async (tabs:any) => {
-      chrome.tabs.sendMessage(tabs[0].id, {action: "reminder", value : source});
+      chrome.tabs.sendMessage(tabs[0].id, {action: "saved_reminder", value : source});
       chrome.storage.sync.get("reminder",
       function(data:any) {
         if (!data?.reminder){
@@ -151,13 +144,13 @@ const reminder = () => {
 
 
 chrome.alarms.create("remind_english_translated", {
-  delayInMinutes: 3,
-  periodInMinutes: 3
+  delayInMinutes: 5,
+  periodInMinutes: 5
 });
 
 chrome.alarms.create("reminder", {
-  delayInMinutes: 5,
-  periodInMinutes: 5
+  delayInMinutes: 10,
+  periodInMinutes: 10
 });
 
 

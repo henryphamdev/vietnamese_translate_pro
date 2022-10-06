@@ -27,6 +27,10 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     // );    
     sendResponse("quiz  " + msg.value);
   }
+  if (msg.action == "saved_reminder") {
+    alert(msg.value);
+    sendResponse("text reminding" + msg.value);
+  }
   if (msg.action == "reminder") {
     alert(msg.value);
     sendResponse("text reminding" + msg.value);
