@@ -1,4 +1,3 @@
-
 // import React from 'react';
 // // import { createRoot } from 'react-dom';
 
@@ -24,7 +23,7 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     //     <App />
     //   </React.StrictMode>,
     //   document.getElementById("react-root")
-    // );    
+    // );
     sendResponse("quiz  " + msg.value);
   }
   if (msg.action == "saved_reminder") {
