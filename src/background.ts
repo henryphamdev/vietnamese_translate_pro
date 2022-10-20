@@ -2,12 +2,12 @@ function searchTerapeak(contextMenu: any) {
 
   var source = contextMenu.selectionText;
   if (contextMenu.menuItemId == "translate") {
-    console.log(`Translated keyword "${source}"`)
+    console.log(`${new Date().toISOString()} Translated keyword "${source}"`)
     chrome.tabs.query({ active: true, currentWindow: true }, async (tabs: any) => {
       let translatedRaw: any = await TEST_HTTPREQUEST(source)
       let translated = ParseDataTranslateFromGG(translatedRaw)
       chrome.tabs.sendMessage(tabs[0].id, { action: "send_translated_value", value: translated });
-      console.log(`Source text: ${source} meaning ${translated}`)
+      console.log(`${new Date().toISOString()} Source text: ${source} meaning ${translated}`)
       chrome.storage.sync.get("translated_history",
         function (data: any) {
           if (!data?.translated_history) {
@@ -19,14 +19,14 @@ function searchTerapeak(contextMenu: any) {
           chrome.storage.sync.set({
             translated_history: data.translated_history
           }, function () {
-            console.log("Save translated history successful!");
+            console.log(`${new Date().toISOString()} Save translated history successful!`);
           });
         }
       )
     })
   }
   if (contextMenu.menuItemId == "reminder") {
-    console.log(`Add qouta to remind: "${source}"`)
+    console.log(`${new Date().toISOString()} Add qouta to remind: "${source}"`)
     chrome.tabs.query({ active: true, currentWindow: true }, async (tabs: any) => {
       chrome.tabs.sendMessage(tabs[0].id, { action: "saved_reminder", value: source });
       chrome.storage.sync.get("reminder",
@@ -40,7 +40,7 @@ function searchTerapeak(contextMenu: any) {
           chrome.storage.sync.set({
             reminder: data.reminder
           }, function () {
-            console.log("Save translated history successful!");
+            console.log(`${new Date().toISOString()} Save translated history successful!`);
           });
         }
       )
@@ -104,7 +104,6 @@ chrome.contextMenus.removeAll(function () {
 chrome.contextMenus.onClicked.addListener(searchTerapeak);
 
 const start = () => {
-  console.log('go here')
   chrome.tabs.query({ active: true, currentWindow: true }, async (tabs: any) => {
     chrome.storage.sync.get("translated_history",
       async function (data: any) {
@@ -112,10 +111,10 @@ const start = () => {
           let ask = data.translated_history[Math.floor(Math.random() * data?.translated_history.length)]
           ask.translated = ask.translated.replace(/[a-s]+/g, "*")
           if (!tabs.length) {
-            console.log(`Cannot get active tab`)
+            console.log(`${new Date().toISOString()} Cannot get active tab`)
           } else {
             chrome.tabs.sendMessage(tabs[0].id, { action: "translated_quiz", value: `${ask.source} meaning ${ask.translated}, động não đi ông già` }, (res: any) => {
-              console.log(`Response from reciever: ${res}`)
+              console.log(`${new Date().toISOString()} Response from reciever: ${res}`)
             });
           }
         }
@@ -125,17 +124,16 @@ const start = () => {
 }
 
 const reminder = () => {
-  console.log('go here')
   chrome.tabs.query({ active: true, currentWindow: true }, async (tabs: any) => {
     chrome.storage.sync.get("reminder",
       async function (data: any) {
         if (data?.reminder) {
           let ask = data.reminder[Math.floor(Math.random() * data?.reminder.length)]
           if (!tabs.length) {
-            console.log(`Cannot get active tab`)
+            console.log(`${new Date().toISOString()} Cannot get active tab`)
           } else {
             chrome.tabs.sendMessage(tabs[0].id, { action: "reminder", value: ask.source }, (res: any) => {
-              console.log(`Response from reciever: ${res}`)
+              console.log(`${new Date().toISOString()} Response from reciever: ${res}`)
             });
           }
         }
@@ -146,13 +144,13 @@ const reminder = () => {
 
 
 chrome.alarms.create("remind_english_translated", {
-  delayInMinutes: 5,
-  periodInMinutes: 5
+  delayInMinutes: 4,
+  periodInMinutes: 4
 });
 
 chrome.alarms.create("reminder", {
-  delayInMinutes: 10,
-  periodInMinutes: 10
+  delayInMinutes: 9,
+  periodInMinutes: 9
 });
 
 

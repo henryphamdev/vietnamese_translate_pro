@@ -4,6 +4,7 @@ export default class myTable extends React.Component {
   state: any = {
     data: this.props.children,
   };
+  root: any = this.props.children;
   //Lifecycle Mouth
   componentWillReceiveProps(nextProps: any) {
     if (
@@ -15,9 +16,52 @@ export default class myTable extends React.Component {
       });
     }
   }
+  searchData(event: any) {
+    this.setState({
+      data: this.root,
+    });
+    if (event.target.value) {
+      let data: any = this.root.filter((item: any) => {
+        return (
+          item.source
+            .toLowerCase()
+            .indexOf(event.target.value.toLowerCase()) !== -1
+        );
+      });
+      this.setState({
+        data: data,
+      });
+    }
+  }
+  removeItem(source: string) {
+    let dataRemoved: any = this.root.filter((item: any) => {
+      return item.source.toLowerCase().indexOf(source.toLowerCase()) == -1;
+    });
+    localStorage.setItem("translated_history", JSON.stringify(dataRemoved));
+    chrome.storage.sync.set(
+      {
+        translated_history: dataRemoved,
+      },
+      function () {
+        console.log(`${new Date().toISOString()} Remove word success!`);
+      }
+    );
+    this.setState({
+      data: dataRemoved,
+    });
+  }
   render() {
     return (
       <>
+        <form>
+          <label>
+            <input
+              placeholder="Search translated word"
+              type="text"
+              onChange={this.searchData.bind(this)}
+            />
+          </label>
+        </form>
         <Table bordered>
           <thead>
             <tr>
@@ -26,6 +70,7 @@ export default class myTable extends React.Component {
               <th>Google Translated</th>
               <th>Refe to Cambridge</th>
               <th>Image description</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -50,6 +95,14 @@ export default class myTable extends React.Component {
                     >
                       {item.source}
                     </a>
+                  </td>
+                  <td>
+                    <button
+                      style={{ color: "red" }}
+                      onClick={(e) => this.removeItem(item.source)}
+                    >
+                      x
+                    </button>
                   </td>
                 </tr>
               );
