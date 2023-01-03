@@ -1,3 +1,4 @@
+import * as listWords from "./600"
 function searchTerapeak(contextMenu: any) {
 
   var source = contextMenu.selectionText;
@@ -123,6 +124,21 @@ const start = () => {
   })
 }
 
+const alert600Words = () => {
+  chrome.tabs.query({ active: true, currentWindow: true }, async (tabs: any) => {
+    let data: any = listWords
+    let ask = data[Math.floor(Math.random() * data.length)]
+    ask.translated = ask.translated.replace(/[a-s]+/g, "*")
+    if (!tabs.length) {
+      console.log(`${new Date().toISOString()} Cannot get active tab`)
+    } else {
+      chrome.tabs.sendMessage(tabs[0].id, { action: "translated_quiz", value: `${ask.source} meaning ${ask.translated}, động não đi ông già` }, (res: any) => {
+        console.log(`${new Date().toISOString()} Response from reciever: ${res}`)
+      });
+    }
+  })
+}
+
 const reminder = () => {
   chrome.tabs.query({ active: true, currentWindow: true }, async (tabs: any) => {
     chrome.storage.sync.get("reminder",
@@ -157,6 +173,7 @@ chrome.alarms.create("reminder", {
 chrome.alarms.onAlarm.addListener(function (alarm) {
   if (alarm.name === "remind_english_translated") {
     start();
+    alert600Words();
   }
   if (alarm.name === "reminder") {
     reminder();
