@@ -33,9 +33,9 @@ function searchTerapeak(contextMenu: any) {
       chrome.storage.sync.get("reminder",
         function (data: any) {
           if (!data?.reminder) {
-            data.reminder = [{ source }]
+            data.reminder = [{ source, translated: "" }]
           } else {
-            data.reminder.unshift({ source })
+            data.reminder.unshift({ source, translated: "" })
           }
           console.log(data)
           chrome.storage.sync.set({

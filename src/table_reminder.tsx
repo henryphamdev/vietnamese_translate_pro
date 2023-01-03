@@ -37,10 +37,10 @@ export default class myTable extends React.Component {
     let dataRemoved: any = this.root.filter((item: any) => {
       return item.source.toLowerCase().indexOf(source.toLowerCase()) == -1;
     });
-    localStorage.setItem("translated_history", JSON.stringify(dataRemoved));
+    localStorage.setItem("reminder", JSON.stringify(dataRemoved));
     chrome.storage.sync.set(
       {
-        translated_history: dataRemoved,
+        reminder: dataRemoved,
       },
       function () {
         console.log(`${new Date().toISOString()} Remove word success!`);
@@ -58,10 +58,10 @@ export default class myTable extends React.Component {
       }
       return item;
     });
-    localStorage.setItem("translated_history", JSON.stringify(dataMasked));
+    localStorage.setItem("reminder", JSON.stringify(dataMasked));
     chrome.storage.sync.set(
       {
-        translated_history: dataMasked,
+        reminder: dataMasked,
       },
       function () {
         console.log(`${new Date().toISOString()} Remove word success!`);
@@ -89,53 +89,30 @@ export default class myTable extends React.Component {
           <thead>
             <tr>
               <th>Stt</th>
-              <th>Tag</th>
-              <th>Source</th>
-              <th>Google Translated</th>
-              <th>Refe to Cambridge</th>
-              <th>Image description</th>
+              <th>Content</th>
+              <th>_</th>
+              <th>_</th>
+              <th>_</th>
+              <th>_</th>
               <th>Action</th>
-              <th>Mask As</th>
             </tr>
           </thead>
           <tbody>
             {this.state.data.map((item: any, index: Number) => {
               return (
-                <tr key={item.source}>
+                <tr>
                   <th scope="row">{index}</th>
-                  <td style={{ color: "green" }}>{item.tag || "Normal"}</td>
                   <td>{item.source}</td>
-                  <td>{item.translated}</td>
-                  <td>
-                    <a
-                      target="_blank"
-                      href={`https://dictionary.cambridge.org/dictionary/english/${item.source}`}
-                    >
-                      {item.source}
-                    </a>
-                  </td>
-                  <td>
-                    <a
-                      target="_blank"
-                      href={`https://www.google.com/search?q=${item.source}&tbm=isch`}
-                    >
-                      {item.source}
-                    </a>
-                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
                   <td>
                     <button
                       style={{ color: "red" }}
                       onClick={(e) => this.removeItem(item.source)}
                     >
                       x
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      style={{ color: "green" }}
-                      onClick={(e) => this.maskAsTechWord(item.source)}
-                    >
-                      Tech
                     </button>
                   </td>
                 </tr>
