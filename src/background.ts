@@ -160,13 +160,13 @@ const reminder = () => {
 
 
 chrome.alarms.create("remind_english_translated", {
-  delayInMinutes: 4,
-  periodInMinutes: 4
+  delayInMinutes: 6,
+  periodInMinutes: 6
 });
 
 chrome.alarms.create("reminder", {
-  delayInMinutes: 9,
-  periodInMinutes: 9
+  delayInMinutes: 2,
+  periodInMinutes: 2
 });
 
 
