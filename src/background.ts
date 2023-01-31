@@ -144,7 +144,32 @@ const reminder = () => {
     chrome.storage.sync.get("reminder",
       async function (data: any) {
         if (data?.reminder) {
-          let ask = data.reminder[Math.floor(Math.random() * data?.reminder.length)]
+          let alertNotJet = data.reminder.filter((item:any) => {
+            return !item.alert;
+          });
+          // console.log(`Data ${JSON.stringify(alertNotJet)}`);
+          console.dir(alertNotJet, {depth : null});
+          console.dir(alertNotJet?.length);
+          if (!alertNotJet?.length){
+            return;
+          }
+          // console.log(`Data alert not jet: ${alertNotJet}`);
+          let ask = alertNotJet[Math.floor(Math.random() * data?.reminder.length - 1)]
+          console.dir(ask, {depth : null});
+          let dataAlerted: any =data.reminder.map((item: any) => {
+            if (item.source == ask.source) {
+              item.alert = "Đã alert";
+            }
+            return item;
+          });
+          chrome.storage.sync.set(
+            {
+              reminder: dataAlerted,
+            },
+            function () {
+              console.log(`${new Date().toISOString()} Remove word success!`);
+            }
+          );
           if (!tabs.length) {
             console.log(`${new Date().toISOString()} Cannot get active tab`)
           } else {
