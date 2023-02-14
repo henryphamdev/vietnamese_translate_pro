@@ -47,6 +47,35 @@ function searchTerapeak(contextMenu: any) {
       )
     })
   }
+
+  if (contextMenu.menuItemId == "import-list-reminder") {
+    let reminds = source.split(" --- ");
+    console.log(`${new Date().toISOString()} Prepare import list reminder: "${source}"`);
+    let importRemind: any = [];
+    for (let remind of reminds) {
+      let tmp = {
+        source: remind,
+        translated: ""
+      }
+      importRemind.push(tmp);
+    }
+    console.dir(importRemind, { depth: null });
+    chrome.storage.sync.get("reminder",
+      function (data: any) {
+        if (!data?.reminder) {
+          data.reminder = importRemind;
+        } else {
+          data.reminder = [...data.reminder, ...importRemind];
+        }
+        console.log(data)
+        chrome.storage.sync.set({
+          reminder: data.reminder
+        }, function () {
+          console.log(`${new Date().toISOString()} Import reminder success!`);
+        });
+      }
+    )
+  }
   // chrome.tabs.create({url: `https://translate.google.com/?sl=en&tl=vi&text=${query}&op=translate`});
 };
 
@@ -100,6 +129,12 @@ chrome.contextMenus.removeAll(function () {
     title: "⛳ Add to Reminder",
     contexts: ["selection"],  // ContextType
   })
+
+  chrome.contextMenus.create({
+    id: "import-list-reminder",
+    title: "⚡ Import List Reminder",
+    contexts: ["selection"],  // ContextType
+  })
 })
 
 chrome.contextMenus.onClicked.addListener(searchTerapeak);
@@ -144,19 +179,19 @@ const reminder = () => {
     chrome.storage.sync.get("reminder",
       async function (data: any) {
         if (data?.reminder) {
-          let alertNotJet = data.reminder.filter((item:any) => {
+          let alertNotJet = data.reminder.filter((item: any) => {
             return !item.alert;
           });
           // console.log(`Data ${JSON.stringify(alertNotJet)}`);
-          console.dir(alertNotJet, {depth : null});
+          console.dir(alertNotJet, { depth: null });
           console.dir(alertNotJet?.length);
-          if (!alertNotJet?.length){
+          if (!alertNotJet?.length) {
             return;
           }
           // console.log(`Data alert not jet: ${alertNotJet}`);
           let ask = alertNotJet[Math.floor(Math.random() * data?.reminder.length - 1)]
-          console.dir(ask, {depth : null});
-          let dataAlerted: any =data.reminder.map((item: any) => {
+          console.dir(ask, { depth: null });
+          let dataAlerted: any = data.reminder.map((item: any) => {
             if (item.source == ask.source) {
               item.alert = "Đã alert";
             }
