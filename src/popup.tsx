@@ -7,7 +7,7 @@ import Tabs from "./tabs";
 
 // let getTranslateHistory = async () => {
 //   return new Promise((resolve: any, reject: any) => {
-//     chrome.storage.sync.get(
+//     chrome.storage.local.get(
 //       {
 //         translated_history: [],
 //       },
@@ -23,7 +23,7 @@ import Tabs from "./tabs";
 // };
 
 // let clearStore = () => {
-//   chrome.storage.sync.clear();
+//   chrome.storage.local.clear();
 // };
 
 // const Popup = () => {

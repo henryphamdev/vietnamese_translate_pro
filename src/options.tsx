@@ -9,7 +9,7 @@ const Options = () => {
   useEffect(() => {
     // Restores select box and checkbox state using the preferences
     // stored in chrome.storage.
-    chrome.storage.sync.get(
+    chrome.storage.local.get(
       {
         favoriteColor: "red",
         likesColor: true,
@@ -22,8 +22,8 @@ const Options = () => {
   }, []);
 
   const saveOptions = () => {
-    // Saves options to chrome.storage.sync.
-    chrome.storage.sync.set(
+    // Saves options to chrome.storage.local.
+    chrome.storage.local.set(
       {
         favoriteColor: color,
         likesColor: like,

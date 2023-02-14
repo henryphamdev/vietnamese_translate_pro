@@ -4,7 +4,7 @@ import Reminder from "./table_reminder";
 
 let getTranslateHistory = async () => {
   return new Promise((resolve: any, reject: any) => {
-    chrome.storage.sync.get(
+    chrome.storage.local.get(
       {
         translated_history: [],
       },
@@ -16,7 +16,7 @@ let getTranslateHistory = async () => {
         );
       }
     );
-    chrome.storage.sync.get(
+    chrome.storage.local.get(
       {
         reminder: [],
       },

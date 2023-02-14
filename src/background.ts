@@ -9,7 +9,7 @@ function searchTerapeak(contextMenu: any) {
       let translated = ParseDataTranslateFromGG(translatedRaw)
       chrome.tabs.sendMessage(tabs[0].id, { action: "send_translated_value", value: translated });
       console.log(`${new Date().toISOString()} Source text: ${source} meaning ${translated}`)
-      chrome.storage.sync.get("translated_history",
+      chrome.storage.local.get("translated_history",
         function (data: any) {
           if (!data?.translated_history) {
             data.translated_history = [{ source, translated }]
@@ -17,7 +17,7 @@ function searchTerapeak(contextMenu: any) {
             data.translated_history.unshift({ source, translated })
           }
           console.log(data)
-          chrome.storage.sync.set({
+          chrome.storage.local.set({
             translated_history: data.translated_history
           }, function () {
             console.log(`${new Date().toISOString()} Save translated history successful!`);
@@ -30,7 +30,7 @@ function searchTerapeak(contextMenu: any) {
     console.log(`${new Date().toISOString()} Add qouta to remind: "${source}"`)
     chrome.tabs.query({ active: true, currentWindow: true }, async (tabs: any) => {
       chrome.tabs.sendMessage(tabs[0].id, { action: "saved_reminder", value: source });
-      chrome.storage.sync.get("reminder",
+      chrome.storage.local.get("reminder",
         function (data: any) {
           if (!data?.reminder) {
             data.reminder = [{ source, translated: "" }]
@@ -38,7 +38,7 @@ function searchTerapeak(contextMenu: any) {
             data.reminder.unshift({ source, translated: "" })
           }
           console.log(data)
-          chrome.storage.sync.set({
+          chrome.storage.local.set({
             reminder: data.reminder
           }, function () {
             console.log(`${new Date().toISOString()} Save translated history successful!`);
@@ -60,7 +60,7 @@ function searchTerapeak(contextMenu: any) {
       importRemind.push(tmp);
     }
     console.dir(importRemind, { depth: null });
-    chrome.storage.sync.get("reminder",
+    chrome.storage.local.get("reminder",
       function (data: any) {
         if (!data?.reminder) {
           data.reminder = importRemind;
@@ -68,7 +68,7 @@ function searchTerapeak(contextMenu: any) {
           data.reminder = [...data.reminder, ...importRemind];
         }
         console.log(data)
-        chrome.storage.sync.set({
+        chrome.storage.local.set({
           reminder: data.reminder
         }, function () {
           console.log(`${new Date().toISOString()} Import reminder success!`);
@@ -141,7 +141,7 @@ chrome.contextMenus.onClicked.addListener(searchTerapeak);
 
 const start = () => {
   chrome.tabs.query({ active: true, currentWindow: true }, async (tabs: any) => {
-    chrome.storage.sync.get("translated_history",
+    chrome.storage.local.get("translated_history",
       async function (data: any) {
         if (data?.translated_history) {
           let ask = data.translated_history[Math.floor(Math.random() * data?.translated_history.length)]
@@ -176,7 +176,7 @@ const alert600Words = () => {
 
 const reminder = () => {
   chrome.tabs.query({ active: true, currentWindow: true }, async (tabs: any) => {
-    chrome.storage.sync.get("reminder",
+    chrome.storage.local.get("reminder",
       async function (data: any) {
         if (data?.reminder) {
           let alertNotJet = data.reminder.filter((item: any) => {
@@ -197,7 +197,7 @@ const reminder = () => {
             }
             return item;
           });
-          chrome.storage.sync.set(
+          chrome.storage.local.set(
             {
               reminder: dataAlerted,
             },

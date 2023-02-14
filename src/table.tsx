@@ -38,7 +38,7 @@ export default class myTable extends React.Component {
       return item.source.toLowerCase().indexOf(source.toLowerCase()) == -1;
     });
     localStorage.setItem("translated_history", JSON.stringify(dataRemoved));
-    chrome.storage.sync.set(
+    chrome.storage.local.set(
       {
         translated_history: dataRemoved,
       },
@@ -59,7 +59,7 @@ export default class myTable extends React.Component {
       return item;
     });
     localStorage.setItem("translated_history", JSON.stringify(dataMasked));
-    chrome.storage.sync.set(
+    chrome.storage.local.set(
       {
         translated_history: dataMasked,
       },

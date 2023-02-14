@@ -38,7 +38,7 @@ export default class myTable extends React.Component {
       return item.source.toLowerCase().indexOf(source.toLowerCase()) == -1;
     });
     localStorage.setItem("reminder", JSON.stringify(dataRemoved));
-    chrome.storage.sync.set(
+    chrome.storage.local.set(
       {
         reminder: dataRemoved,
       },
@@ -59,7 +59,7 @@ export default class myTable extends React.Component {
       return item;
     });
     localStorage.setItem("reminder", JSON.stringify(dataMasked));
-    chrome.storage.sync.set(
+    chrome.storage.local.set(
       {
         reminder: dataMasked,
       },
@@ -78,13 +78,13 @@ export default class myTable extends React.Component {
       return item;
     });
     localStorage.setItem("reminder", JSON.stringify(resetAlert));
-    chrome.storage.sync.set(
+    chrome.storage.local.set(
       {
         reminder: resetAlert,
       },
       function () {
         console.log(`${new Date().toISOString()} Reset alert success!`);
-        console.dir(resetAlert, {depth : null});
+        console.dir(resetAlert, { depth: null });
       }
     );
     this.setState({
@@ -105,7 +105,14 @@ export default class myTable extends React.Component {
             />
           </label>
         </form>
-        <Button color="warning" onClick={() => {this.resetAlert()}}>Reset alert</Button>
+        <Button
+          color="warning"
+          onClick={() => {
+            this.resetAlert();
+          }}
+        >
+          Reset alert
+        </Button>
         <Table hover>
           <thead>
             <tr>
